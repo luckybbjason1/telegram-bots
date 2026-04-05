@@ -30,6 +30,7 @@
   --accent-pink:   #FF6B9D;
   --accent-red:    #FF4444;
   --accent-cyan:   #00FFC8;
+  --accent-bank:   #FF9A3C;
 
   /* Spacing */
   --space-xs:  0.5rem;
@@ -460,6 +461,7 @@ body::after {
   border: 1px solid color-mix(in srgb, var(--card-accent, var(--holo-b)) 25%, transparent);
 }
 
+.bot-card--bank   { --card-glow: rgba(255,154,60,0.15); --card-accent: var(--accent-bank); }
 .bot-card--blue   { --card-glow: rgba(0,180,216,0.15); --card-accent: var(--accent-blue); }
 .bot-card--gold   { --card-glow: rgba(255,215,0,0.12);  --card-accent: var(--accent-gold); }
 .bot-card--purple { --card-glow: rgba(155,93,229,0.15); --card-accent: var(--accent-purple); }
@@ -607,6 +609,7 @@ body::after {
 .bot-section--pink   { --bot-accent:var(--accent-pink);   --bot-glow:rgba(255,107,157,0.08); --bot-glow-color:rgba(255,107,157,0.5); --bot-ring-color:rgba(255,107,157,0.2); }
 .bot-section--red    { --bot-accent:var(--accent-red);    --bot-glow:rgba(255,68,68,0.07);   --bot-glow-color:rgba(255,68,68,0.5);   --bot-ring-color:rgba(255,68,68,0.2); }
 .bot-section--cyan   { --bot-accent:var(--accent-cyan);   --bot-glow:rgba(0,255,200,0.07);   --bot-glow-color:rgba(0,255,200,0.5);   --bot-ring-color:rgba(0,255,200,0.2); }
+.bot-section--bank   { --bot-accent:var(--accent-bank);   --bot-glow:rgba(255,154,60,0.08);  --bot-glow-color:rgba(255,154,60,0.5);  --bot-ring-color:rgba(255,154,60,0.2); }
 
 /* ============================================================
    FEATURES GRID
