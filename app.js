@@ -225,6 +225,61 @@
   });
 
   /* ============================================================
+     SCROLL PROGRESS BAR
+     ============================================================ */
+  const progressBar = document.getElementById('scroll-progress');
+  if (progressBar) {
+    window.addEventListener('scroll', () => {
+      const scrolled = window.scrollY;
+      const total = document.documentElement.scrollHeight - window.innerHeight;
+      progressBar.style.transform = `scaleX(${total > 0 ? scrolled / total : 0})`;
+    }, { passive: true });
+  }
+
+  /* ============================================================
+     BACK TO TOP BUTTON
+     ============================================================ */
+  const backToTop = document.getElementById('back-to-top');
+  if (backToTop) {
+    window.addEventListener('scroll', () => {
+      backToTop.classList.toggle('visible', window.scrollY > 400);
+    }, { passive: true });
+    backToTop.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  /* ============================================================
+     FAQ ACCORDION
+     ============================================================ */
+  document.querySelectorAll('.faq-q').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      const answer = btn.nextElementSibling;
+
+      // Close all others
+      document.querySelectorAll('.faq-q[aria-expanded="true"]').forEach(other => {
+        if (other !== btn) {
+          other.setAttribute('aria-expanded', 'false');
+          const otherA = other.nextElementSibling;
+          otherA.classList.remove('open');
+          otherA.hidden = true;
+        }
+      });
+
+      // Toggle this one
+      btn.setAttribute('aria-expanded', String(!expanded));
+      if (!expanded) {
+        answer.hidden = false;
+        requestAnimationFrame(() => answer.classList.add('open'));
+      } else {
+        answer.classList.remove('open');
+        answer.hidden = true;
+      }
+    });
+  });
+
+  /* ============================================================
      NAV: SCROLL STATE + ACTIVE LINK + HAMBURGER
      ============================================================ */
   const nav        = document.getElementById('main-nav');
