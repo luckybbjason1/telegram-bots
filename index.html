@@ -166,6 +166,12 @@
 </head>
 <body>
 
+  <!-- ===== SCROLL PROGRESS ===== -->
+  <div id="scroll-progress" aria-hidden="true"></div>
+
+  <!-- ===== BACK TO TOP ===== -->
+  <button id="back-to-top" aria-label="맨 위로 이동" title="맨 위로">↑</button>
+
   <!-- ===== NAV ===== -->
   <nav id="main-nav" aria-label="메인 네비게이션">
     <div class="nav-inner">
@@ -213,7 +219,7 @@
           <a href="https://t.me/Chain_Keeper_Bot" class="btn btn--ghost" target="_blank" rel="noopener">텔레그램 열기</a>
         </div>
         <div class="hero-stats reveal-up delay-4" aria-label="주요 통계">
-          <div class="hero-stat"><span class="stat-num" data-target="7">0</span><span class="stat-label">개의 봇</span></div>
+          <div class="hero-stat"><span class="stat-num" data-target="8">0</span><span class="stat-label">개의 봇</span></div>
           <div class="hero-stat"><span class="stat-num" data-target="24">0</span><span class="stat-label">시간 운영</span></div>
           <div class="hero-stat"><span class="stat-num" data-target="365">0</span><span class="stat-label">일 자동화</span></div>
         </div>
@@ -229,7 +235,7 @@
       <div class="container">
         <header class="section-header reveal-up">
           <p class="section-eyebrow">ALL BOTS</p>
-          <h2 id="overview-heading">7가지 프리미엄 봇</h2>
+          <h2 id="overview-heading">8가지 프리미엄 봇</h2>
           <p class="section-desc">각 봇은 독립적으로 최고의 경험을 제공하도록 정밀하게 설계되었습니다</p>
         </header>
         <ul class="bots-grid" role="list" aria-label="봇 목록">
@@ -604,6 +610,43 @@
       </div>
     </section>
 
+    <!-- ===== FAQ ===== -->
+    <section id="faq" class="section section--dark" aria-labelledby="faq-heading">
+      <div class="container">
+        <header class="section-header reveal-up">
+          <p class="section-eyebrow">FAQ</p>
+          <h2 id="faq-heading">자주 묻는 질문</h2>
+          <p class="section-desc">봇 사용 전 궁금한 점을 미리 확인하세요</p>
+        </header>
+        <ul class="faq-list reveal-up" role="list">
+          <li class="faq-item">
+            <button class="faq-q" aria-expanded="false">텔레그램 로또봇 어떻게 사용하나요?<span class="faq-icon" aria-hidden="true">+</span></button>
+            <div class="faq-a" hidden>텔레그램에서 @bokuenbot을 검색하거나 링크를 클릭해 시작하세요. /start 명령 후 AI 번호 추천, 당첨 확인, 자동 알림 등 모든 기능을 버튼으로 이용할 수 있습니다.</div>
+          </li>
+          <li class="faq-item">
+            <button class="faq-q" aria-expanded="false">USDT 뱅크봇 연 240% 이자는 어떻게 받나요?<span class="faq-icon" aria-hidden="true">+</span></button>
+            <div class="faq-a" hidden>@USDT_T_BANKbot에서 TRC-20 USDT를 예치하면 자동으로 이자가 적립됩니다. 5개월 후 원금 전액 회수, 이후 3개월은 순수익 기간으로 총 8개월 서비스 사이클입니다.</div>
+          </li>
+          <li class="faq-item">
+            <button class="faq-q" aria-expanded="false">TRX 에너지 충전봇은 무엇인가요?<span class="faq-icon" aria-hidden="true">+</span></button>
+            <div class="faq-a" hidden>@Chain_Keeper_Bot은 TRON 네트워크 TRX 에너지를 충전해 USDT 전송 수수료를 대폭 절감하는 봇입니다. USDT⇄TRX 즉시 환전, 365일 자동 정산, 실시간 환율 지원.</div>
+          </li>
+          <li class="faq-item">
+            <button class="faq-q" aria-expanded="false">텔레그램 그룹 스팸 자동 차단 봇이 있나요?<span class="faq-icon" aria-hidden="true">+</span></button>
+            <div class="faq-a" hidden>@kard_bobot(카봇 수호신)이 텔레그램 그룹의 스팸·도배·링크를 AI로 자동 감지·차단합니다. /admin 명령으로 버튼 패널을 열어 경고·음소거·추방·차단을 한 번에 처리할 수 있습니다.</div>
+          </li>
+          <li class="faq-item">
+            <button class="faq-q" aria-expanded="false">텔레그램에서 이모지 스티커 만드는 봇은?<span class="faq-icon" aria-hidden="true">+</span></button>
+            <div class="faq-a" hidden>@emojo1bot(이모지제작 스튜디오)에서 텍스트 한 줄만 입력하면 AI가 나만의 커스텀 이모지와 텔레그램 스티커를 즉시 제작합니다. 스티커 팩 생성, 친구 공유, 단체방 적용까지 무료로 사용 가능합니다.</div>
+          </li>
+          <li class="faq-item">
+            <button class="faq-q" aria-expanded="false">텔레그램 텍사스홀덤 포커 봇은 어디서 시작하나요?<span class="faq-icon" aria-hidden="true">+</span></button>
+            <div class="faq-a" hidden>@poker_dezhoubot에서 텔레그램 정통 텍사스홀덤 포커를 즐길 수 있습니다. 친구 초대 후 실시간 멀티플레이어 게임, 정기 토너먼트 참가, 칩 획득이 가능합니다.</div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
     <!-- ===== FINAL CTA ===== -->
     <section id="cta" class="section section--cta" aria-labelledby="cta-heading">
       <div class="cta-glow" aria-hidden="true"></div>
@@ -654,7 +697,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <p>© 2025 텔레그램봇허브 · 텔레그램 봇 추천 8종 · 로또봇 · 포커게임 · USDT뱅크 · TRX에너지충전 · 그룹관리봇 · 이모지봇</p>
+      <p>© 2026 텔레그램봇허브 · 텔레그램 봇 추천 8종 · 로또봇 · 포커게임 · USDT뱅크 · TRX에너지충전 · 그룹관리봇 · 이모지봇</p>
     </div>
   </footer>
 
