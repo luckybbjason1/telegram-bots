@@ -820,6 +820,154 @@ footer {
 }
 
 /* ============================================================
+   SCROLL PROGRESS BAR
+   ============================================================ */
+#scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: var(--gradient-holo);
+  transform-origin: left;
+  transform: scaleX(0);
+  z-index: 9999;
+  pointer-events: none;
+  transition: transform 0.1s linear;
+}
+
+/* ============================================================
+   BACK TO TOP BUTTON
+   ============================================================ */
+#back-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 500;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-hover);
+  color: var(--text-secondary);
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity var(--dur-normal) var(--ease-out),
+              transform var(--dur-normal) var(--ease-out),
+              border-color var(--dur-fast),
+              color var(--dur-fast),
+              box-shadow var(--dur-fast);
+  pointer-events: none;
+}
+#back-to-top.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+#back-to-top:hover {
+  border-color: var(--holo-a);
+  color: var(--text-primary);
+  box-shadow: 0 0 20px rgba(108,99,255,0.4);
+}
+
+/* ============================================================
+   HAMBURGER → X ANIMATION
+   ============================================================ */
+.nav-hamburger[aria-expanded="true"] span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.nav-hamburger[aria-expanded="true"] span:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+.nav-hamburger[aria-expanded="true"] span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+.nav-hamburger span {
+  transition: transform var(--dur-normal) var(--ease-out),
+              opacity var(--dur-fast),
+              background var(--dur-fast);
+}
+
+/* ============================================================
+   FAQ ACCORDION
+   ============================================================ */
+.faq-list {
+  max-width: 760px;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.faq-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: border-color var(--dur-normal);
+}
+.faq-item:has(.faq-q[aria-expanded="true"]) {
+  border-color: var(--border-hover);
+}
+.faq-q {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--text-primary);
+  text-align: left;
+  background: transparent;
+  cursor: pointer;
+  transition: color var(--dur-fast);
+}
+.faq-q:hover { color: var(--holo-b); }
+.faq-icon {
+  flex-shrink: 0;
+  font-size: 1.4rem;
+  font-weight: 300;
+  color: var(--holo-b);
+  transition: transform var(--dur-normal) var(--ease-out);
+  line-height: 1;
+}
+.faq-q[aria-expanded="true"] .faq-icon {
+  transform: rotate(45deg);
+}
+.faq-a {
+  padding: 0 1.5rem 1.25rem;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  line-height: 1.75;
+}
+.faq-a.open {
+  display: block !important;
+}
+
+/* ============================================================
+   ENHANCED CARD HOVER GLOW
+   ============================================================ */
+.bot-card:hover {
+  box-shadow: 0 24px 60px rgba(0,0,0,0.5),
+              0 0 0 1px color-mix(in srgb, var(--card-accent, var(--holo-b)) 30%, transparent);
+}
+.bot-card--blue:hover   { box-shadow: 0 24px 60px rgba(0,180,216,0.15), 0 0 40px rgba(0,180,216,0.08); }
+.bot-card--gold:hover   { box-shadow: 0 24px 60px rgba(255,215,0,0.12),  0 0 40px rgba(255,215,0,0.06); }
+.bot-card--purple:hover { box-shadow: 0 24px 60px rgba(155,93,229,0.15), 0 0 40px rgba(155,93,229,0.08); }
+.bot-card--mint:hover   { box-shadow: 0 24px 60px rgba(6,214,160,0.12),  0 0 40px rgba(6,214,160,0.06); }
+.bot-card--pink:hover   { box-shadow: 0 24px 60px rgba(255,107,157,0.15),0 0 40px rgba(255,107,157,0.08); }
+.bot-card--red:hover    { box-shadow: 0 24px 60px rgba(255,68,68,0.12),  0 0 40px rgba(255,68,68,0.06); }
+.bot-card--cyan:hover   { box-shadow: 0 24px 60px rgba(0,255,200,0.12),  0 0 40px rgba(0,255,200,0.06); }
+.bot-card--bank:hover   { box-shadow: 0 24px 60px rgba(255,154,60,0.15), 0 0 40px rgba(255,154,60,0.08); }
+
+/* ============================================================
    REDUCED MOTION
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {
