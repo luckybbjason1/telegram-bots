@@ -341,3 +341,261 @@
   });
 
 })();
+
+/* ============================================================
+   ADS · FRIEND LINKS · STATS  (Main Site Integration Layer)
+   ============================================================ */
+(function () {
+  'use strict';
+
+  /* ── Stats Tracking ── */
+  function trackPageVisit() {
+    try {
+      var stats = _getStats();
+      stats.totalVisits = (stats.totalVisits || 0) + 1;
+      var today = new Date().toISOString().slice(0, 10);
+      stats.dailyVisits = stats.dailyVisits || {};
+      stats.dailyVisits[today] = (stats.dailyVisits[today] || 0) + 1;
+      // Keep only last 30 days
+      var keys = Object.keys(stats.dailyVisits).sort();
+      if (keys.length > 30) {
+        keys.slice(0, keys.length - 30).forEach(function(k){ delete stats.dailyVisits[k]; });
+      }
+      _setStats(stats);
+    } catch(e) {}
+  }
+
+  function trackBotClick(botId) {
+    try {
+      var stats = _getStats();
+      stats.botClicks = stats.botClicks || {};
+      stats.botClicks[botId] = (stats.botClicks[botId] || 0) + 1;
+      _setStats(stats);
+    } catch(e) {}
+  }
+
+  function trackAdClick(adType) {
+    try {
+      var stats = _getStats();
+      stats.adClicks = stats.adClicks || {};
+      stats.adClicks[adType] = (stats.adClicks[adType] || 0) + 1;
+      _setStats(stats);
+    } catch(e) {}
+  }
+
+  function _getStats() {
+    try { return JSON.parse(localStorage.getItem('site_stats')) || {}; }
+    catch(e) { return {}; }
+  }
+
+  function _setStats(s) {
+    try { localStorage.setItem('site_stats', JSON.stringify(s)); }
+    catch(e) {}
+  }
+
+  /* ── Render Ads ── */
+  function renderAds() {
+    var cfg;
+    try { cfg = JSON.parse(localStorage.getItem('ads_config')) || {}; }
+    catch(e) { return; }
+
+    ['banner', 'sidebar', 'inline', 'footer'].forEach(function(type) {
+      var slot = document.getElementById('ad-' + type);
+      var ad = cfg[type];
+      if (!slot || !ad || !ad.enabled) return;
+
+      slot.style.display = '';
+
+      // Set text content (do not use innerHTML for security)
+      var textEl = slot.querySelector('.ad-text');
+      if (textEl && ad.content) textEl.textContent = ad.content;
+
+      // Set link
+      var linkEl = slot.querySelector('.ad-link');
+      if (linkEl && ad.link) {
+        linkEl.href = ad.link;
+        linkEl.addEventListener('click', function() { trackAdClick(type); });
+      }
+
+      // Set image
+      if (ad.imageUrl) {
+        var imgEl = slot.querySelector('.ad-img');
+        if (imgEl) {
+          imgEl.src = ad.imageUrl;
+          imgEl.alt = ad.title || '';
+          imgEl.style.display = '';
+        }
+      }
+    });
+  }
+
+  /* ── Render Friend Links ── */
+  function renderLinks() {
+    var links;
+    try { links = JSON.parse(localStorage.getItem('friend_links')) || []; }
+    catch(e) { links = []; }
+
+    var approved = links.filter(function(l) { return l.status === 'approved'; });
+    var grid = document.getElementById('friend-links-grid');
+    var emptyMsg = document.getElementById('friend-links-empty');
+    var section = document.getElementById('friend-links');
+
+    if (!grid) return;
+
+    // Hide entire section if no approved links
+    if (approved.length === 0) {
+      if (grid) grid.textContent = '';
+      if (emptyMsg) emptyMsg.style.display = '';
+      return;
+    }
+
+    if (emptyMsg) emptyMsg.style.display = 'none';
+
+    grid.textContent = '';
+    approved.forEach(function(link) {
+      var a = document.createElement('a');
+      a.href       = link.siteUrl;
+      a.target     = '_blank';
+      a.rel        = 'noopener';
+      a.className  = 'fl-card';
+
+      // Logo or placeholder
+      if (link.logoUrl) {
+        var img = document.createElement('img');
+        img.src       = link.logoUrl;
+        img.alt       = link.siteName;
+        img.className = 'fl-card-logo';
+        img.onerror   = function() {
+          this.style.display = 'none';
+          a.insertBefore(_makePlaceholder(link.siteName), a.firstChild);
+        };
+        a.appendChild(img);
+      } else {
+        a.appendChild(_makePlaceholder(link.siteName));
+      }
+
+      var nameEl = document.createElement('span');
+      nameEl.className = 'fl-card-name';
+      nameEl.textContent = link.siteName;
+      a.appendChild(nameEl);
+
+      if (link.siteDesc) {
+        var descEl = document.createElement('span');
+        descEl.className = 'fl-card-desc';
+        descEl.textContent = link.siteDesc;
+        a.appendChild(descEl);
+      }
+
+      grid.appendChild(a);
+    });
+  }
+
+  function _makePlaceholder(name) {
+    var el = document.createElement('div');
+    el.className = 'fl-card-logo-placeholder';
+    el.textContent = (name || '?').charAt(0).toUpperCase();
+    return el;
+  }
+
+  /* ── Apply Friend Link Modal ── */
+  function initApplyForm() {
+    var overlay = document.getElementById('modal-apply-link');
+    var form    = document.getElementById('form-apply-link');
+    var success = document.getElementById('apply-success');
+    if (!overlay || !form) return;
+
+    function openModal() {
+      form.style.display = '';
+      if (success) success.style.display = 'none';
+      overlay.style.display = 'flex';
+      requestAnimationFrame(function() { overlay.classList.add('open'); });
+    }
+
+    function closeModal() {
+      overlay.classList.remove('open');
+      setTimeout(function() { overlay.style.display = 'none'; form.reset(); }, 220);
+    }
+
+    // Open buttons
+    var btnApply = document.getElementById('btn-apply-link');
+    var btnApplyEmpty = document.getElementById('btn-apply-link-empty');
+    if (btnApply)      btnApply.addEventListener('click', openModal);
+    if (btnApplyEmpty) btnApplyEmpty.addEventListener('click', openModal);
+
+    // Close
+    var closeBtn = document.getElementById('fl-modal-close');
+    var cancelBtn = document.getElementById('fl-cancel');
+    var successClose = document.getElementById('fl-success-close');
+    if (closeBtn)    closeBtn.addEventListener('click', closeModal);
+    if (cancelBtn)   cancelBtn.addEventListener('click', closeModal);
+    if (successClose) successClose.addEventListener('click', closeModal);
+    overlay.addEventListener('click', function(e) {
+      if (e.target === overlay) closeModal();
+    });
+
+    // Submit
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      var siteName = document.getElementById('apply-sitename').value.trim();
+      var siteUrl  = document.getElementById('apply-url').value.trim();
+      if (!siteName || !siteUrl) return;
+
+      var links;
+      try { links = JSON.parse(localStorage.getItem('friend_links')) || []; }
+      catch(err) { links = []; }
+
+      var id = Math.random().toString(36).slice(2,10) + Date.now().toString(36);
+      links.push({
+        id:           id,
+        siteName:     siteName,
+        siteUrl:      siteUrl,
+        siteDesc:     document.getElementById('apply-desc').value.trim(),
+        logoUrl:      document.getElementById('apply-logo').value.trim(),
+        contactEmail: document.getElementById('apply-email').value.trim(),
+        status:       'pending',
+        submittedAt:  new Date().toISOString(),
+        reviewedAt:   null,
+      });
+
+      try { localStorage.setItem('friend_links', JSON.stringify(links)); } catch(err) {}
+
+      // Show success
+      form.style.display = 'none';
+      if (success) success.style.display = '';
+    });
+  }
+
+  /* ── Bind Bot Click Tracking ── */
+  function bindBotTracking() {
+    var botMap = {
+      dremshop: 'bot-dremshop',
+      lotto:    'bot-lotto',
+      kard:     'bot-kard',
+      usdt:     'bot-usdt',
+      emoji:    'bot-emoji',
+      poker:    'bot-poker',
+      chain:    'bot-chain',
+      usdtbank: 'bot-usdtbank',
+    };
+    Object.entries(botMap).forEach(function(entry) {
+      var sectionId = entry[0];
+      var trackKey  = entry[1];
+      var section   = document.getElementById(sectionId);
+      if (!section) return;
+      var links = section.querySelectorAll('a[href*="t.me"]');
+      links.forEach(function(a) {
+        a.addEventListener('click', function() { trackBotClick(trackKey); });
+      });
+    });
+  }
+
+  /* ── Init ── */
+  document.addEventListener('DOMContentLoaded', function() {
+    trackPageVisit();
+    renderAds();
+    renderLinks();
+    initApplyForm();
+    bindBotTracking();
+  });
+
+})();

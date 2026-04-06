@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>管理后台 — 텔레그램봇허브</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="admin.css">
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js" defer></script>
+</head>
+<body>
+
+<!-- ===== LOGIN SCREEN ===== -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">
+      <span class="logo-icon">🤖</span>
+      <h1>봇허브 관리자</h1>
+      <p>Admin Dashboard · 管理后台</p>
+    </div>
+    <div class="login-error" id="login-error">用户名或密码错误，请重试</div>
+    <form class="login-form" id="login-form" novalidate>
+      <div class="form-group">
+        <label for="login-username">用户名</label>
+        <input type="text" id="login-username" placeholder="admin" autocomplete="username" required>
+      </div>
+      <div class="form-group">
+        <label for="login-password">密码</label>
+        <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password" required>
+      </div>
+      <button type="submit" class="btn-login">登 录</button>
+    </form>
+  </div>
+</div>
+
+<!-- ===== ADMIN APP ===== -->
+<div id="admin-app" class="hidden">
+
+  <!-- Sidebar overlay (mobile) -->
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <span class="logo-icon">🤖</span>
+        <div>
+          <div class="logo-text">봇허브 Admin</div>
+          <div class="logo-sub">管理后台</div>
+        </div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav" role="navigation" aria-label="Admin navigation">
+      <div class="nav-section-label">概览</div>
+      <div class="sidebar-nav-item active" data-page="dashboard" role="button" tabindex="0">
+        <span class="nav-icon">📊</span>
+        <span>数据仪表盘</span>
+      </div>
+
+      <div class="nav-section-label" style="margin-top:8px">功能管理</div>
+      <div class="sidebar-nav-item" data-page="ads" role="button" tabindex="0">
+        <span class="nav-icon">📢</span>
+        <span>广告管理</span>
+      </div>
+      <div class="sidebar-nav-item" data-page="links" role="button" tabindex="0">
+        <span class="nav-icon">🔗</span>
+        <span>友情链接</span>
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="btn-logout" id="btn-logout">
+        <span>🚪</span>
+        <span>退出登录</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="main-content">
+
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="hamburger-btn" id="hamburger-btn" aria-label="Toggle sidebar">
+          <span></span><span></span><span></span>
+        </button>
+        <h1 class="page-title" id="page-title">数据仪表盘</h1>
+      </div>
+      <div class="topbar-right">
+        <div class="admin-badge">
+          <span class="badge-dot"></span>
+          <span id="admin-username">admin</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Page Content -->
+    <div class="page-content">
+
+      <!-- ── DASHBOARD PAGE ────────────────────────────── -->
+      <section class="page active" id="page-dashboard">
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-card-icon">👁️</div>
+            <div class="stat-card-label">总访问量</div>
+            <div class="stat-card-value" id="stat-total-visits">0</div>
+            <div class="stat-card-change up" id="stat-visits-change">↑ 今日 +0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-icon">🖱️</div>
+            <div class="stat-card-label">Bot 点击总数</div>
+            <div class="stat-card-value" id="stat-bot-clicks">0</div>
+            <div class="stat-card-change up">↑ 所有 Bot 累计</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-icon">📢</div>
+            <div class="stat-card-label">广告点击总数</div>
+            <div class="stat-card-value" id="stat-ad-clicks">0</div>
+            <div class="stat-card-change" id="stat-ad-ctr">CTR —</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-icon">🔗</div>
+            <div class="stat-card-label">待审友链申请</div>
+            <div class="stat-card-value" id="stat-pending-links">0</div>
+            <div class="stat-card-change" id="stat-links-info">点击友情链接处理</div>
+          </div>
+        </div>
+
+        <!-- Charts -->
+        <div class="charts-grid">
+          <!-- Visits Line Chart -->
+          <div class="chart-card chart-full">
+            <div class="chart-card-header">
+              <div>
+                <div class="chart-card-title">📈 近 7 天访问趋势</div>
+                <div class="chart-card-sub">每日页面访问量统计</div>
+              </div>
+            </div>
+            <div class="chart-wrap">
+              <canvas id="chart-visits"></canvas>
+            </div>
+          </div>
+
+          <!-- Bot Clicks Bar Chart -->
+          <div class="chart-card">
+            <div class="chart-card-header">
+              <div>
+                <div class="chart-card-title">🤖 各 Bot 点击排名</div>
+                <div class="chart-card-sub">累计点击量对比</div>
+              </div>
+            </div>
+            <div class="chart-wrap">
+              <canvas id="chart-bots"></canvas>
+            </div>
+          </div>
+
+          <!-- Ad Clicks Pie Chart -->
+          <div class="chart-card">
+            <div class="chart-card-header">
+              <div>
+                <div class="chart-card-title">📊 广告位点击分布</div>
+                <div class="chart-card-sub">各广告位点击占比</div>
+              </div>
+            </div>
+            <div class="chart-wrap">
+              <canvas id="chart-ads"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div style="margin-top:8px; display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="btn btn-ghost btn-sm" onclick="AdminUI.navigateTo('ads')">→ 管理广告</button>
+          <button class="btn btn-ghost btn-sm" onclick="AdminUI.navigateTo('links')">→ 审核友链</button>
+          <button class="btn btn-ghost btn-sm" id="btn-reset-stats">🗑 重置统计数据</button>
+        </div>
+      </section>
+
+      <!-- ── ADS PAGE ───────────────────────────────────── -->
+      <section class="page" id="page-ads">
+        <div class="section-hdr">
+          <div>
+            <h2>📢 广告位管理</h2>
+            <p>管理 4 个广告位的内容与开关状态</p>
+          </div>
+          <button class="btn btn-primary" id="btn-save-ads">💾 保存所有设置</button>
+        </div>
+
+        <div class="ads-grid" id="ads-grid">
+          <!-- Rendered by admin.js -->
+        </div>
+      </section>
+
+      <!-- ── LINKS PAGE ─────────────────────────────────── -->
+      <section class="page" id="page-links">
+        <div class="section-hdr">
+          <div>
+            <h2>🔗 友情链接管理</h2>
+            <p>审核申请、手动添加/编辑友情链接</p>
+          </div>
+          <button class="btn btn-primary" id="btn-add-link">+ 手动添加</button>
+        </div>
+
+        <div class="tabs-bar">
+          <button class="tab-btn active" data-tab="pending" id="tab-pending">
+            待审核 <span id="badge-pending" style="background:#fbbf24;color:#fff;border-radius:50px;padding:1px 7px;font-size:0.72rem;margin-left:4px">0</span>
+          </button>
+          <button class="tab-btn" data-tab="approved" id="tab-approved">已通过</button>
+          <button class="tab-btn" data-tab="rejected" id="tab-rejected">已拒绝</button>
+        </div>
+
+        <div class="links-table-wrap" id="links-table-container">
+          <!-- Rendered by admin.js -->
+        </div>
+      </section>
+
+    </div><!-- /page-content -->
+  </div><!-- /main-content -->
+</div><!-- /admin-app -->
+
+<!-- ===== MODAL: Add / Edit Link ===== -->
+<div class="modal-overlay" id="modal-link" role="dialog" aria-modal="true" aria-labelledby="modal-link-title">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3 id="modal-link-title">添加友情链接</h3>
+      <button class="modal-close" id="modal-link-close" aria-label="关闭">✕</button>
+    </div>
+    <form class="modal-form" id="form-link" novalidate>
+      <input type="hidden" id="link-edit-id">
+      <div class="form-group">
+        <label for="link-sitename">网站名称 <span class="required">*</span></label>
+        <input type="text" id="link-sitename" placeholder="例：示例站" maxlength="50" required>
+      </div>
+      <div class="form-group">
+        <label for="link-url">网站 URL <span class="required">*</span></label>
+        <input type="url" id="link-url" placeholder="https://example.com" required>
+      </div>
+      <div class="form-group">
+        <label for="link-desc">网站描述</label>
+        <textarea id="link-desc" placeholder="一句话介绍这个网站" maxlength="120" rows="2"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="link-logo">Logo URL（可选）</label>
+        <input type="url" id="link-logo" placeholder="https://example.com/logo.png">
+      </div>
+      <div class="form-group">
+        <label for="link-email">联系邮箱（可选）</label>
+        <input type="email" id="link-email" placeholder="contact@example.com">
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" id="modal-link-cancel">取消</button>
+        <button type="submit" class="btn btn-primary" id="modal-link-submit">保存</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toast-container" aria-live="polite"></div>
+
+<script src="admin.js" defer></script>
+</body>
+</html>
