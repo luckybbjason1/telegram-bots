@@ -12,8 +12,9 @@
   /* ============================================================
      DEFAULT CREDENTIALS  (change after first login via code)
      ============================================================ */
-  const DEFAULT_USER = 'admin';
-  const DEFAULT_PASS = 'admin888';   // Change this before deploying
+  const DEFAULT_USER = 'luckybbjason';
+  const DEFAULT_PASS = 'yingjiE168';
+  const CRED_VERSION  = 'v2';          // bump this whenever credentials change
 
   /* ============================================================
      STORAGE MODULE
@@ -65,8 +66,9 @@
 
     async init() {
       let auth = AdminStorage.getAuth();
-      if (!auth || !auth.username) {
+      if (!auth || !auth.username || auth._v !== CRED_VERSION) {
         auth = {
+          _v:           CRED_VERSION,
           username:     await this.hashStr(DEFAULT_USER),
           passwordHash: await this.hashStr(DEFAULT_PASS),
           sessionToken: null,
