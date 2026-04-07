@@ -714,17 +714,17 @@
       <div class="friend-links-header">
         <div>
           <p class="section-eyebrow">PARTNER SITES</p>
-          <h2 id="friend-links-heading" class="friend-links-title">友情链接</h2>
+          <h2 id="friend-links-heading" class="friend-links-title">파트너 링크</h2>
         </div>
         <button id="btn-apply-link" class="btn btn--apply-link">
-          🔗 申请友链
+          🔗 링크 신청
         </button>
       </div>
-      <div id="friend-links-grid" class="friend-links-grid" aria-label="友情链接列表">
+      <div id="friend-links-grid" class="friend-links-grid" aria-label="파트너 링크 목록">
         <!-- Rendered by app.js renderLinks() -->
       </div>
       <p id="friend-links-empty" class="friend-links-empty" style="display:none">
-        暂无友情链接，<button id="btn-apply-link-empty" class="link-btn">点击申请</button>成为第一个！
+        파트너 링크가 없습니다. <button id="btn-apply-link-empty" class="link-btn">신청하기</button> 첫 번째가 되어보세요!
       </p>
     </div>
   </section>
@@ -776,40 +776,40 @@
   <div id="modal-apply-link" class="fl-modal-overlay" style="display:none" role="dialog" aria-modal="true" aria-labelledby="modal-apply-title">
     <div class="fl-modal-box">
       <div class="fl-modal-header">
-        <h3 id="modal-apply-title">🔗 申请友情链接</h3>
+        <h3 id="modal-apply-title">🔗 링크 신청</h3>
         <button class="fl-modal-close" id="fl-modal-close" aria-label="닫기">✕</button>
       </div>
-      <p class="fl-modal-tip">提交申请后，管理员审核通过后将展示在友链区域。</p>
+      <p class="fl-modal-tip">신청 제출 후 관리자 승인을 거쳐 링크 영역에 표시됩니다.</p>
       <form id="form-apply-link" class="fl-modal-form" novalidate>
         <div class="fl-form-group">
-          <label for="apply-sitename">网站名称 <span style="color:#ef4444">*</span></label>
-          <input type="text" id="apply-sitename" placeholder="例：示例站" maxlength="50" required>
+          <label for="apply-sitename">사이트 이름 <span style="color:#ef4444">*</span></label>
+          <input type="text" id="apply-sitename" placeholder="예: 예시 사이트" maxlength="50" required>
         </div>
         <div class="fl-form-group">
-          <label for="apply-url">网站 URL <span style="color:#ef4444">*</span></label>
+          <label for="apply-url">사이트 URL <span style="color:#ef4444">*</span></label>
           <input type="url" id="apply-url" placeholder="https://example.com" required>
         </div>
         <div class="fl-form-group">
-          <label for="apply-desc">网站描述</label>
-          <textarea id="apply-desc" placeholder="一句话介绍你的网站" maxlength="120" rows="2"></textarea>
+          <label for="apply-desc">사이트 설명</label>
+          <textarea id="apply-desc" placeholder="사이트를 한 줄로 소개해주세요" maxlength="120" rows="2"></textarea>
         </div>
         <div class="fl-form-group">
-          <label for="apply-logo">Logo URL（可选）</label>
+          <label for="apply-logo">로고 URL (선택사항)</label>
           <input type="url" id="apply-logo" placeholder="https://example.com/logo.png">
         </div>
         <div class="fl-form-group">
-          <label for="apply-email">联系邮箱（可选）</label>
+          <label for="apply-email">연락처 이메일 (선택사항)</label>
           <input type="email" id="apply-email" placeholder="your@email.com">
         </div>
         <div class="fl-form-actions">
-          <button type="button" class="btn btn--ghost-sm" id="fl-cancel">取消</button>
-          <button type="submit" class="btn btn--primary-sm">提交申请</button>
+          <button type="button" class="btn btn--ghost-sm" id="fl-cancel">취소</button>
+          <button type="submit" class="btn btn--primary-sm">신청 제출</button>
         </div>
       </form>
       <div id="apply-success" class="fl-success" style="display:none">
         <div class="fl-success-icon">✅</div>
-        <p>申请已提交！管理员审核后将展示您的链接。</p>
-        <button class="btn btn--primary-sm" id="fl-success-close">好的</button>
+        <p>신청이 제출되었습니다! 관리자 승인 후 링크가 표시됩니다.</p>
+        <button class="btn btn--primary-sm" id="fl-success-close">확인</button>
       </div>
     </div>
   </div>
